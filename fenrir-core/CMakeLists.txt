@@ -1,10 +1,10 @@
 set(FENRIR_CORE_SRC
-    src/prelude
-    src/model/coord
+    src/prelude.cpp
+    src/model/coord.cpp
 )
 
 set(FENRIR_CORE_TEST_SRC
-    test/model/coord_test
+    test/model/coord_test.cpp
 )
 
 add_library(fenrir-core ${FENRIR_CORE_SRC})
