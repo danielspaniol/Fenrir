@@ -19,5 +19,8 @@ if(FENRIR_TESTS)
     )
     target_link_libraries(fenrir-ai-tests PRIVATE
         fenrir-ai
+        gtest_main
     )
+    include(GoogleTest)
+    gtest_discover_tests(fenrir-ai-tests)
 endif(FENRIR_TESTS)

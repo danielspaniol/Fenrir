@@ -14,5 +14,8 @@ if(FENRIR_TESTS)
     )
     target_link_libraries(fenrir-core-tests PRIVATE
         fenrir-core
+        gtest_main
     )
+    include(GoogleTest)
+    gtest_discover_tests(fenrir-core-tests)
 endif(FENRIR_TESTS)
