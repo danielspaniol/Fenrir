@@ -7,6 +7,7 @@ set(FENRIR_CORE_SRC
 )
 
 set(FENRIR_CORE_TEST_SRC
+    test/model/board_test.cpp
     test/model/castle_right_test.cpp
     test/model/color_test.cpp
     test/model/coord_test.cpp
