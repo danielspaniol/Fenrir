@@ -4,6 +4,8 @@
 
 using namespace fenrir::core;
 
+TEST(Piece, default_ctor) { EXPECT_EQ(Piece{}, Piece::EMPTY); }
+
 TEST(Piece, color) {
   EXPECT_FALSE(Piece(Piece::EMPTY).color());
   EXPECT_EQ(Piece(Piece::WHITE_PAWN).color(), Color::WHITE);

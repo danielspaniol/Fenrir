@@ -25,6 +25,7 @@ struct Piece {
     BLACK_KING
   };
 
+  constexpr Piece() : m_data{EMPTY} {}
   constexpr Piece(T t) : m_data{t} {}
   constexpr operator T() const { return m_data; }
 
