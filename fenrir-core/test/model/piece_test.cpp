@@ -4,7 +4,7 @@
 
 using namespace fenrir::core;
 
-TEST(Piece__color, ReturnsTheColor) {
+TEST(Piece, color) {
   EXPECT_FALSE(Piece(Piece::EMPTY).color());
   EXPECT_EQ(Piece(Piece::WHITE_PAWN).color(), Color::WHITE);
   EXPECT_EQ(Piece(Piece::BLACK_PAWN).color(), Color::BLACK);

@@ -4,11 +4,9 @@
 
 using namespace fenrir::core;
 
-TEST(Coord__Ctor, Default_Ctor_CreatesOutOfBoardCoordinate) {
-  EXPECT_EQ(Coord{}, 0x88);
-}
+TEST(Coord, default_ctor) { EXPECT_EQ(Coord{}, 0x88); }
 
-TEST(Coord__foreach, IteratesOverAllValidCoordinates) {
+TEST(Coord, foreach) {
   u8 cnt[Coord::CNT] = {0};
   Coord::foreach ([&cnt](auto c) { ++cnt[c.idx()]; });
 
@@ -21,7 +19,7 @@ TEST(Coord__foreach, IteratesOverAllValidCoordinates) {
   }
 }
 
-TEST(Coord__is_on_board, IsTrueForCoordinatesWithout0x88) {
+TEST(Coord, is_on_board__IsTrueForCoordinatesWithout0x88) {
   for (u8 i = 0; i < Coord::CNT; ++i) {
     Coord c{Coord::T{i}};
     if ((i & 0x88) == 0) {
@@ -32,7 +30,7 @@ TEST(Coord__is_on_board, IsTrueForCoordinatesWithout0x88) {
   }
 }
 
-TEST(Coord__bool_conversion, IsOnlyTrueForCoordsOnTheBoard) {
+TEST(Coord, is_on_board__IsOnlyTrueForCoordsOnTheBoard) {
   for (u8 i = 0; i < Coord::CNT; ++i) {
     if (Coord c{Coord::T{i}}) {
       EXPECT_TRUE(c.is_on_board());
@@ -40,7 +38,7 @@ TEST(Coord__bool_conversion, IsOnlyTrueForCoordsOnTheBoard) {
   }
 }
 
-TEST(Coord__bool_conversion, IsTrueForAllCoordsOnTheBoard) {
+TEST(Coord, operator_bool) {
   usize cnt = 0;
   for (u8 i = 0; i < Coord::CNT; ++i) {
     if (Coord{Coord::T{i}}) {
@@ -50,7 +48,7 @@ TEST(Coord__bool_conversion, IsTrueForAllCoordsOnTheBoard) {
   EXPECT_EQ(cnt, Coord::ON_BOARD_CNT);
 }
 
-TEST(Coord__rank, ReturnsTheRank) {
+TEST(Coord, rank) {
   EXPECT_EQ(Coord{Coord::A1}.rank(), 0);
   EXPECT_EQ(Coord{Coord::A2}.rank(), 1);
   EXPECT_EQ(Coord{Coord::B1}.rank(), 0);
@@ -61,7 +59,7 @@ TEST(Coord__rank, ReturnsTheRank) {
   EXPECT_EQ(Coord{Coord::H8}.rank(), 7);
 }
 
-TEST(Coord__file, ReturnsTheFile) {
+TEST(Coord, file) {
   EXPECT_EQ(Coord{Coord::A1}.file(), 0);
   EXPECT_EQ(Coord{Coord::A2}.file(), 0);
   EXPECT_EQ(Coord{Coord::B1}.file(), 1);
@@ -72,21 +70,21 @@ TEST(Coord__file, ReturnsTheFile) {
   EXPECT_EQ(Coord{Coord::H8}.file(), 7);
 }
 
-TEST(CoordDelta__operator_plus, AddsToTheDelta) {
+TEST(CoordDelta, operator_plus) {
   EXPECT_EQ(CoordDelta(0) + CoordDelta(0), 0);
   EXPECT_EQ(CoordDelta(1) + CoordDelta(1), 2);
   EXPECT_EQ(CoordDelta(3) + CoordDelta(7), 10);
   EXPECT_EQ(CoordDelta(1) + CoordDelta(100), 101);
 }
 
-TEST(CoordDelta__operator_minus, SubtractsFromTheDelta) {
+TEST(CoordDelta, operator_minus) {
   EXPECT_EQ(CoordDelta(0) - CoordDelta(0), 0);
   EXPECT_EQ(CoordDelta(1) - CoordDelta(1), 0);
   EXPECT_EQ(CoordDelta(7) - CoordDelta(3), 4);
   EXPECT_EQ(CoordDelta(100) - CoordDelta(1), 99);
 }
 
-TEST(CoordDelta__rank_literal, CreatesTheDelta) {
+TEST(CoordDelta, literal_rank) {
   EXPECT_EQ(0_rank, 0x00);
   EXPECT_EQ(1_rank, 0x01);
   EXPECT_EQ(2_rank, 0x02);
@@ -97,13 +95,13 @@ TEST(CoordDelta__rank_literal, CreatesTheDelta) {
   EXPECT_EQ(7_rank, 0x07);
 }
 
-TEST(CoordDelta__rank_literal, FailsForInvalidRankDeltas) {
+TEST(CoordDelta, literal_rank__AbortsOnInvalidRankOffsets) {
   EXPECT_DEATH(8_rank, "Assertion");
   EXPECT_DEATH(9_rank, "Assertion");
   EXPECT_DEATH(10_rank, "Assertion");
 }
 
-TEST(CoordDelta__file_literal, CreatesTheDelta) {
+TEST(CoordDelta, literal_file) {
   EXPECT_EQ(0_file, 0x00);
   EXPECT_EQ(1_file, 0x10);
   EXPECT_EQ(2_file, 0x20);
@@ -114,13 +112,13 @@ TEST(CoordDelta__file_literal, CreatesTheDelta) {
   EXPECT_EQ(7_file, 0x70);
 }
 
-TEST(CoordDelta__file_literal, FailsForInvalidFileDeltas) {
+TEST(CoordDelta, literal_file__AbortsOnInvalidFileOffsets) {
   EXPECT_DEATH(8_file, "Assertion");
   EXPECT_DEATH(9_file, "Assertion");
   EXPECT_DEATH(10_file, "Assertion");
 }
 
-TEST(Coord__operator_plus, AddsTheDeltaIfTheResultIsValid) {
+TEST(Coord, operator_plus) {
   // Directly on the values
   EXPECT_EQ(Coord::A1 + 0_rank + 0_file, Coord::A1);
   EXPECT_EQ(Coord::A1 + 1_rank + 0_file, Coord::A2);
@@ -135,7 +133,7 @@ TEST(Coord__operator_plus, AddsTheDeltaIfTheResultIsValid) {
   EXPECT_EQ(Coord{Coord::C3} + 2_rank + 4_file, Coord::G5);
 }
 
-TEST(Coord__operator_plus, ReturnsFalseyValueIfTheResultIsInvalid) {
+TEST(Coord, operator_plus__ReturnsFalseIfResultNotOnTheBoard) {
   EXPECT_FALSE(Coord{Coord::A8} + 1_rank);
   EXPECT_FALSE(Coord{Coord::A2} + 7_rank);
   EXPECT_FALSE(Coord{Coord::B3} + 7_rank);
@@ -145,7 +143,7 @@ TEST(Coord__operator_plus, ReturnsFalseyValueIfTheResultIsInvalid) {
   EXPECT_FALSE(Coord{Coord::H3} + 1_file);
   EXPECT_FALSE(Coord{Coord::G5} + 6_file);
 }
-TEST(Coord__operator_plus, Associativity) {
+TEST(Coord, operator_plus__Associativity) {
   // Directly on the values
   EXPECT_EQ((Coord::A1 + 0_rank) + 0_file, Coord::A1 + (0_rank + 0_file));
   EXPECT_EQ((Coord::A1 + 1_rank) + 0_file, Coord::A1 + (1_rank + 0_file));
@@ -165,7 +163,7 @@ TEST(Coord__operator_plus, Associativity) {
             Coord{Coord::C3} + (2_rank + 4_file));
 }
 
-TEST(Coord__operator_minus, SubtractsTheDeltaIfTheResultIsValid) {
+TEST(Coord, operator_minus) {
   // Directly on the values
   EXPECT_EQ(Coord::A1 - 0_rank - 0_file, Coord::A1);
   EXPECT_EQ(Coord::A2 - 1_rank - 0_file, Coord::A1);
@@ -180,7 +178,7 @@ TEST(Coord__operator_minus, SubtractsTheDeltaIfTheResultIsValid) {
   EXPECT_EQ(Coord{Coord::G5} - 2_rank - 4_file, Coord::C3);
 }
 
-TEST(Coord__operator_minus, ReturnsFalseyValueIfTheResultIsInvalid) {
+TEST(Coord, operator_minus__ReturnsFalseIfResultNotOnTheBoard) {
   EXPECT_FALSE(Coord{Coord::A1} - 1_rank);
   EXPECT_FALSE(Coord{Coord::A2} - 7_rank);
   EXPECT_FALSE(Coord{Coord::B3} - 7_rank);
@@ -191,7 +189,7 @@ TEST(Coord__operator_minus, ReturnsFalseyValueIfTheResultIsInvalid) {
   EXPECT_FALSE(Coord{Coord::A5} - 7_file);
 }
 
-TEST(Coord__operator_minus, Distributivity) {
+TEST(Coord, operator_minus__Distributivity) {
   // Directly on the values
   EXPECT_EQ((Coord::A1 - 0_rank) - 0_file, Coord::A1 - (0_rank + 0_file));
   EXPECT_EQ((Coord::A2 - 1_rank) - 0_file, Coord::A2 - (1_rank + 0_file));

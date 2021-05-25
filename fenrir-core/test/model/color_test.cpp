@@ -4,7 +4,7 @@
 
 using namespace fenrir::core;
 
-TEST(Color__flip, ReturnsTheOpositeColor) {
+TEST(Color, flip) {
   EXPECT_EQ(Color(Color::WHITE).flipped(), Color::BLACK);
   EXPECT_EQ(Color(Color::BLACK).flipped(), Color::WHITE);
 }
