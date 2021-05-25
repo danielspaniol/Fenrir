@@ -1,6 +1,8 @@
-add_library(fenrir-core
-    dummy.cpp
+set(FENRIR_CORE_SRC
+    src/prelude
 )
+
+add_library(fenrir-core ${FENRIR_CORE_SRC})
 target_include_directories(fenrir-core PUBLIC
     include
 )
