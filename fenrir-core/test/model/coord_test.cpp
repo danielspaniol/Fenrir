@@ -19,6 +19,12 @@ TEST(Coord, foreach) {
   }
 }
 
+TEST(Coord, foreach_VisitsAllCoordinates) {
+  u8 cnt = 0;
+  Coord::foreach ([&cnt](auto c) { ++cnt; });
+  EXPECT_EQ(cnt, Coord::ON_BOARD_CNT);
+}
+
 TEST(Coord, is_on_board__IsTrueForCoordinatesWithout0x88) {
   for (u8 i = 0; i < Coord::CNT; ++i) {
     Coord c{Coord::T{i}};

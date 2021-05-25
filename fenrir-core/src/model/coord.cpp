@@ -8,6 +8,8 @@ auto Coord::foreach (const std::function<void(Coord)> fn) -> void {
   for (u8 i = 0; i < Coord::CNT; ++i) {
     // If the coordinate gets invalid, the 4th bit is set.
     // To jump to the next valid coord, we need to add 0b1000.
+    // The first 0b0111 are added manually, the last 1 is added by the loop.
+    //
     //  0b00000000 (valid)    +1
     //  ...
     //  0b00000111 (valid)    +1
@@ -19,10 +21,10 @@ auto Coord::foreach (const std::function<void(Coord)> fn) -> void {
     //  0b00100000 (valid)    +1
     //  ...
     if ((i & MASK) != 0) {
-      i += 0x08;
+      i += 0x07;
+    } else {
+      fn(Coord::T{i});
     }
-
-    fn(Coord::T{i});
   }
 }
 
