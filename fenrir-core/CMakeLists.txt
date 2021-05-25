@@ -2,11 +2,13 @@ set(FENRIR_CORE_SRC
     src/prelude.cpp
     src/model/color.cpp
     src/model/coord.cpp
+    src/model/piece.cpp
 )
 
 set(FENRIR_CORE_TEST_SRC
     test/model/color_test.cpp
     test/model/coord_test.cpp
+    test/model/piece_test.cpp
 )
 
 add_library(fenrir-core ${FENRIR_CORE_SRC})
