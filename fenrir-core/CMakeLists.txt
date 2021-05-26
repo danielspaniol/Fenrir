@@ -1,5 +1,6 @@
 set(FENRIR_CORE_SRC
     src/prelude.cpp
+    src/model/board.cpp
     src/model/castle_right.cpp
     src/model/color.cpp
     src/model/coord.cpp

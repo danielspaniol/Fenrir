@@ -75,6 +75,10 @@ struct Board {
   auto set_fullmove_counter(u32 i) -> void { m_meta.fullmove_counter = i; }
   auto inc_fullmove_counter() -> void { ++m_meta.fullmove_counter; }
 
+  friend auto operator<<(std::ostream &stream, const Board &board)
+      -> std::ostream &;
+  auto dump() const -> void;
+
 private:
   BoardData m_data;
   BoardMeta m_meta;
